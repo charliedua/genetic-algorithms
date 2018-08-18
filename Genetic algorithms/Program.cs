@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using algorithm;
 
 namespace Genetic_algorithms
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            Entity entity = new Entity();
+            Population population = new Population { entity };
         }
     }
 }
