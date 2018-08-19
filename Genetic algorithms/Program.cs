@@ -12,8 +12,8 @@ namespace Genetic_algorithms
 {
     public class Program
     {
-        private const int TOTAL_POPULATION = 5;
         private const float MUTATION_RATE = 0.1f;
+        private const int TOTAL_POPULATION = 5;
 
         private static void Main(string[] args)
         {
@@ -53,10 +53,16 @@ namespace Genetic_algorithms
                 for (int i = 0; i < population.Length; i++)
                 {
                     Random random = new Random();
-                    int a = random.Next(matingPool.Count());
-                    int b = random.Next(matingPool.Count());
-                    Entity partnerA = matingPool[a];
-                    Entity partnerB = matingPool[b];
+                    Entity partnerA;
+                    Entity partnerB;
+                    do
+                    {
+                        int a = random.Next(matingPool.Count());
+                        int b = random.Next(matingPool.Count());
+                        partnerA = matingPool[a];
+                        partnerB = matingPool[b];
+                    } while (partnerA._data.ToString() == partnerB._data.ToString());
+
                     Entity child = partnerA.Crossover(partnerB);
 
                     child._data.Mutate(MUTATION_RATE);
@@ -67,7 +73,7 @@ namespace Genetic_algorithms
                     Console.WriteLine("Parent 1: {0}", partnerA._data.ToString());
                     Console.WriteLine("Parent 2: {0}", partnerB._data.ToString());
                     Console.WriteLine("Child   : {0}", partnerA._data.ToString());
-                    Thread.Sleep(3000);
+                    Thread.Sleep(800);
                 }
             }
         }

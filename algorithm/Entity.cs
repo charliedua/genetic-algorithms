@@ -26,15 +26,20 @@ namespace algorithm
                 {
                     score++;
                 }
+                // score = (int)Math.Pow((double)score, (double)2);
             }
             Fitness = (float)score / target.Length;
         }
 
+        /// <summary>
+        /// Crossovers the specified partner.
+        /// </summary>
+        /// <param name="partner">The partner.</param>
+        /// <returns>The child</returns>
         public Entity Crossover(Entity partner)
         {
             Random random = new Random();
             Entity child = new Entity(_data.Genes.Length);
-            int midpoint = random.Next(_data.Genes.Length);
             for (int i = 0; i < _data.Genes.Length; i++)
             {
                 if (i % 2 == 0)

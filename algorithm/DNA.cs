@@ -12,7 +12,7 @@ namespace algorithm
         {
             Random random = new Random(new Random().Next(int.MaxValue));
             genes = new char[target];
-            var chars = getCharArray();
+            var chars = GetCharArray();
             for (int i = 0; i < genes.Length; i++)
             {
                 genes[i] = chars[random.Next(27)];
@@ -23,8 +23,8 @@ namespace algorithm
 
         public void Mutate(float mutationRate)
         {
-            var chars = getCharArray();
-            Random random = new Random();
+            var chars = GetCharArray();
+            Random random = new Random(new Random().Next(1000));
             for (int i = 0; i < genes.Length; i++)
             {
                 if (random.Next(101) / 100 < mutationRate)
@@ -39,7 +39,7 @@ namespace algorithm
             return string.Concat(genes);
         }
 
-        private char[] getCharArray()
+        private char[] GetCharArray()
         {
             char[] chars = new char[27];
             int j = 0;
