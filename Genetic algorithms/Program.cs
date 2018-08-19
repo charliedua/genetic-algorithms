@@ -38,6 +38,7 @@ namespace Genetic_algorithms
                     for (int j = 0; j < n; j++)
                     {
                         matingPool.Add(population[i]);
+                        Thread.Sleep(10);
                     }
                 }
 

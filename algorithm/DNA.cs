@@ -10,7 +10,7 @@ namespace algorithm
 
         public DNA(int target)
         {
-            Random random = new Random(new Random().Next(int.MaxValue));
+            Random random = new Random();
             genes = new char[target];
             var chars = GetCharArray();
             for (int i = 0; i < genes.Length; i++)
@@ -24,10 +24,10 @@ namespace algorithm
         public void Mutate(float mutationRate)
         {
             var chars = GetCharArray();
-            Random random = new Random(new Random().Next(1000));
+            Random random = new Random();
             for (int i = 0; i < genes.Length; i++)
             {
-                if (random.Next(101) / 100 < mutationRate)
+                if (random.Next(1, 101) / 100 < mutationRate)
                 {
                     genes[i] = chars[random.Next(27)];
                 }
