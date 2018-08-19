@@ -111,13 +111,13 @@ namespace GeneticGenericAlgorithm
         private static bool Update()
         {
             ga.CreateNewGenration();
-            Console.WriteLine("Genration: {0}", ga.GenCount);
-            foreach (var item in ga.Population)
-            {
-                Console.WriteLine(string.Concat(item.Genes));
-            }
-            Thread.Sleep(100);
             Console.Clear();
+            Console.WriteLine("Genration: {0}", ga.GenCount);
+            //foreach (var item in ga.Population)
+            //{
+            Console.WriteLine(string.Concat(ga.Population[0].Genes));
+            //}
+            Thread.Sleep(100);
             return true;
         }
     }

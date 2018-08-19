@@ -23,7 +23,7 @@ namespace GeneticGenericAlgorithm
             _random = random;
             GetRandomGene = getRandomGene;
             FitnessFunction = fitnessFunction;
-            Fitness = 0f;
+
             if (shouldInitGenes)
             {
                 for (int i = 0; i < Genes.Length; i++)
@@ -72,7 +72,7 @@ namespace GeneticGenericAlgorithm
 
             for (int i = 0; i < Genes.Length; i++)
             {
-                child.Genes[i] = _random.NextDouble() < 0.5 ? partner.Genes[i] : this.Genes[i];
+                child.Genes[i] = (_random.Next(0, 101) / 100) < 0.5 ? partner.Genes[i] : this.Genes[i];
             }
 
             return child;
@@ -100,11 +100,16 @@ namespace GeneticGenericAlgorithm
         {
             for (int i = 0; i < Genes.Length; i++)
             {
-                if (_random.NextDouble() < mutationRate)
+                if ((_random.Next(0, 101) / 100) < mutationRate)
                 {
                     Genes[i] = GetRandomGene();
                 }
             }
+        }
+
+        public void Normalize(float max)
+        {
+            Fitness /= max;
         }
     }
 }

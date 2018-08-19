@@ -58,6 +58,10 @@ namespace GeneticGenericAlgorithm
         /// </summary>
         public void CreateNewGenration()
         {
+            if (Population.Count <= 0)
+            {
+                return;
+            }
             if (Population.Count > 0)
             {
                 CalcFitness();
@@ -68,13 +72,18 @@ namespace GeneticGenericAlgorithm
 
             for (int i = 0; i < Population.Count; i++)
             {
-                var mom = PickOne();
-                var dad = PickOne();
+                DNA<T> mom;
+                DNA<T> dad;
+                do
+                {
+                    mom = PickOne();
+                    dad = PickOne();
+                } while (string.Concat(mom.Genes) == string.Concat(dad.Genes));
                 var child = mom.Crossover(dad);
                 child.Mutate(_mutationRate);
                 newPopulation.Add(child);
             }
-            Swap(Population, newPopulation);
+            Swap(ref Population, ref newPopulation);
             GenCount++;
         }
 
@@ -84,16 +93,26 @@ namespace GeneticGenericAlgorithm
         /// <returns></returns>
         public DNA<T> PickOne()
         {
-            float randomNumber = _random.Next(1, 101) / 100 * fitnessSum;
-            for (int i = 0; i < Population.Count; i++)
-            {
-                if (randomNumber < Population[i].Fitness)
-                {
-                    return Population[i];
-                }
-                randomNumber -= Population[i].Fitness;
-            }
-            return null;
+            //for (int i = 0; i < Population.Count; i++)
+            //{
+            //    Population[i].Normalize(fitnessSum);
+            //    _random.Next(0, Population.Count);
+            //}
+            //for (int i = 0; i < Population.Count; i++)
+            //{
+            //}
+            return Population[_random.Next(0, Population.Count)];
+
+            //double randomNumber = _random.NextDouble() * fitnessSum;
+            //for (int i = 0; i < Population.Count; i++)
+            //{
+            //    if (randomNumber < Population[i].Fitness)
+            //    {
+            //        return Population[i];
+            //    }
+            //    randomNumber -= Population[i].Fitness;
+            //}
+            //return null;
         }
 
         /// <summary>
@@ -101,7 +120,7 @@ namespace GeneticGenericAlgorithm
         /// </summary>
         /// <param name="a">a.</param>
         /// <param name="b">The b.</param>
-        public void Swap(List<DNA<T>> a, List<DNA<T>> b)
+        public void Swap(ref List<DNA<T>> a, ref List<DNA<T>> b)
         {
             List<DNA<T>> temp = a;
             a = b;
