@@ -5,10 +5,8 @@ namespace GeneticGenericAlgorithm
     public class DNA<T>
     {
         private readonly Random _random;
-        public T[] Genes { get; private set; }
-        public int Size { get; private set; }
-        private readonly Func<T> GetRandomGene;
         private readonly Func<int, float> FitnessFunction;
+        private readonly Func<T> GetRandomGene;
 
         public DNA(Random random, int size, Func<T> getRandomGene,
             Func<int, float> fitnessFunction, bool shouldInitGenes = true)
@@ -25,6 +23,9 @@ namespace GeneticGenericAlgorithm
                 }
             }
         }
+
+        public T[] Genes { get; private set; }
+        public int Size { get; private set; }
 
         public float CalcFitness(int index) => FitnessFunction(index);
 
