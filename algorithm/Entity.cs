@@ -8,9 +8,9 @@ namespace algorithm
     {
         public DNA _data;
 
-        public Entity(int target)
+        public Entity(int target, Random random)
         {
-            _data = new DNA(target);
+            _data = new DNA(target, random);
             Fitness = 0f;
         }
 
@@ -36,23 +36,26 @@ namespace algorithm
         /// </summary>
         /// <param name="partner">The partner.</param>
         /// <returns>The child</returns>
-        public Entity Crossover(Entity partner)
+        public Entity Crossover(Entity partner, Random random)
         {
-            Random random = new Random();
-            Entity child = new Entity(_data.Genes.Length);
+            Entity child = new Entity(_data.Genes.Length, random);
             for (int i = 0; i < _data.Genes.Length; i++)
             {
-                if (i % 2 == 0)
-                {
-                    child._data.Genes[i] = partner._data.Genes[i];
-                }
-                else
-                {
-                    child._data.Genes[i] = _data.Genes[i];
-                }
-                //if (i > midpoint) { child._data.Genes[i] = _data.Genes[i]; }
-                //else { child._data.Genes[i] = partner._data.Genes[i]; }
+                child._data.Genes[i] = random.NextDouble() < 0.5 ? _data.Genes[i] : partner._data.Genes[i];
             }
+            //for (int i = 0; i < _data.Genes.Length; i++)
+            //{
+            //    if (i % 2 == 0)
+            //    {
+            //        child._data.Genes[i] = partner._data.Genes[i];
+            //    }
+            //    else
+            //    {
+            //        child._data.Genes[i] = _data.Genes[i];
+            //    }
+            //    //if (i > midpoint) { child._data.Genes[i] = _data.Genes[i]; }
+            //    //else { child._data.Genes[i] = partner._data.Genes[i]; }
+            //}
             return child;
         }
     }

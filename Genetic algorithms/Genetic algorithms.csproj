@@ -43,16 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Program_new.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\algorithm\algorithm.csproj">
-      <Project>{e184ea7a-ff07-4034-8e88-7face00987d9}</Project>
-      <Name>algorithm</Name>
+    <ProjectReference Include="..\GeneticGenericAlgorithm\GeneticGenericAlgorithm.csproj">
+      <Project>{a18c9d31-d5ad-4cc1-b09d-d38696eaa6fb}</Project>
+      <Name>GeneticGenericAlgorithm</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,16 +12,18 @@ namespace Genetic_algorithms
 {
     public class Program
     {
-        private const float MUTATION_RATE = 0.1f;
+        private const float MUTATION_RATE = 0.01f;
         private const int TOTAL_POPULATION = 5;
+        private static int gen = 0;
 
         private static void Main(string[] args)
         {
             string target = "to be or not to be";
             var population = new Entity[TOTAL_POPULATION];
+            Random random = new Random();
             for (int i = 0; i < population.Length; i++)
             {
-                population[i] = new Entity(target.Length);
+                population[i] = new Entity(target.Length, random);
             }
             while (true)
             {
@@ -53,7 +55,6 @@ namespace Genetic_algorithms
 
                 for (int i = 0; i < population.Length; i++)
                 {
-                    Random random = new Random();
                     Entity partnerA;
                     Entity partnerB;
                     do
@@ -64,18 +65,19 @@ namespace Genetic_algorithms
                         partnerB = matingPool[b];
                     } while (partnerA._data.ToString() == partnerB._data.ToString());
 
-                    Entity child = partnerA.Crossover(partnerB);
+                    Entity child = partnerA.Crossover(partnerB, random);
 
                     child._data.Mutate(MUTATION_RATE);
 
                     population[i] = child;
-                    Console.Clear();
-                    Console.WriteLine("target  : {0}", target);
-                    Console.WriteLine("Parent 1: {0}", partnerA._data.ToString());
-                    Console.WriteLine("Parent 2: {0}", partnerB._data.ToString());
-                    Console.WriteLine("Child   : {0}", partnerA._data.ToString());
-                    Thread.Sleep(800);
+                    //Console.Clear();
+                    //Console.WriteLine("target  : {0}", target);
+                    //Console.WriteLine("Parent 1: {0}", partnerA._data.ToString());
+                    //Console.WriteLine("Parent 2: {0}", partnerB._data.ToString());
+                    //Console.WriteLine("Child   : {0}", child._data.ToString());
                 }
+                Console.WriteLine("gen     : {0}", gen);
+                gen++;
             }
         }
     }

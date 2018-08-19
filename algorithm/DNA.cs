@@ -8,9 +8,8 @@ namespace algorithm
     {
         private char[] genes;
 
-        public DNA(int target)
+        public DNA(int target, Random random)
         {
-            Random random = new Random();
             genes = new char[target];
             var chars = GetCharArray();
             for (int i = 0; i < genes.Length; i++)
