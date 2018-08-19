@@ -6,27 +6,49 @@ namespace algorithm
 {
     public class Entity
     {
-        public List<string> _data;
+        public DNA _data;
 
-        public Entity(ICollection<string> data)
+        public Entity(int target)
         {
-            _data = new List<string>(data);
+            _data = new DNA(target);
             Fitness = 0f;
         }
 
-        public DNA DNA;
-
         public float Fitness { get; set; }
 
-        public Entity Crossover(Entity entity)
+        public void CalcFitness(string target)
         {
-            List<string> data = new List<string>(_data);
+            int score = 0;
+            for (int i = 0; i < _data.Genes.Length; i++)
+            {
+                var chars = new List<char>(target.ToCharArray());
+                if (chars.Contains(_data.Genes[i]))
+                {
+                    score++;
+                }
+            }
+            Fitness = (float)score / target.Length;
+        }
+
+        public Entity Crossover(Entity partner)
+        {
             Random random = new Random();
-            int midpoint = random.Next(0, _data.Count);
-            List<string> endingArr = _data.GetRange(midpoint, _data.Count);
-            List<string> startArr = entity._data.GetRange(0, midpoint);
-            startArr.AddRange(endingArr);
-            return new Entity(startArr);
+            Entity child = new Entity(_data.Genes.Length);
+            int midpoint = random.Next(_data.Genes.Length);
+            for (int i = 0; i < _data.Genes.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    child._data.Genes[i] = partner._data.Genes[i];
+                }
+                else
+                {
+                    child._data.Genes[i] = _data.Genes[i];
+                }
+                //if (i > midpoint) { child._data.Genes[i] = _data.Genes[i]; }
+                //else { child._data.Genes[i] = partner._data.Genes[i]; }
+            }
+            return child;
         }
     }
 }
