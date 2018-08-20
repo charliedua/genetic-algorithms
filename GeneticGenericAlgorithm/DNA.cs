@@ -72,7 +72,7 @@ namespace GeneticGenericAlgorithm
 
             for (int i = 0; i < Genes.Length; i++)
             {
-                child.Genes[i] = (_random.Next(0, 101) / 100) < 0.5 ? partner.Genes[i] : this.Genes[i];
+                child.Genes[i] = _random.NextDouble() < 0.5 ? partner.Genes[i] : Genes[i];
             }
 
             return child;
@@ -100,16 +100,11 @@ namespace GeneticGenericAlgorithm
         {
             for (int i = 0; i < Genes.Length; i++)
             {
-                if ((_random.Next(0, 101) / 100) < mutationRate)
+                if (_random.NextDouble() < mutationRate)
                 {
                     Genes[i] = GetRandomGene();
                 }
             }
-        }
-
-        public void Normalize(float max)
-        {
-            Fitness /= max;
         }
     }
 }

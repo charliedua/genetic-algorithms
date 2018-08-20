@@ -12,7 +12,7 @@ namespace GeneticGenericAlgorithm
         private readonly string _target;
         private readonly int PopulationSize;
         private float fitnessSum;
-        private List<DNA<T>> newPopulation;
+        public List<DNA<T>> newPopulation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneticAlgoritm{T}"/> class.
@@ -27,7 +27,7 @@ namespace GeneticGenericAlgorithm
             Random random, string target, Func<T> getRandomGene,
             Func<int, float> fitnessFunction)
         {
-            GenCount = 1;
+            GenCount = 0;
             _target = target;
             _random = random;
             _mutationRate = mutationRate;
@@ -42,7 +42,7 @@ namespace GeneticGenericAlgorithm
         }
 
         /// <summary>
-        /// Calculates the fitness.
+        /// Calculates the fitness of everyone in the population and computes fitnessSum.
         /// </summary>
         public void CalcFitness()
         {
@@ -58,32 +58,24 @@ namespace GeneticGenericAlgorithm
         /// </summary>
         public void CreateNewGenration()
         {
-            if (Population.Count <= 0)
-            {
-                return;
-            }
-            if (Population.Count > 0)
-            {
-                CalcFitness();
-                Population.Sort(CompareDna);
-            }
+            CalcFitness();
+            Population.Sort(CompareDna);
+
             // List<DNA<T>> newPopulation = new List<DNA<T>>(PopulationSize);
             newPopulation.Clear();
 
             for (int i = 0; i < Population.Count; i++)
             {
-                DNA<T> mom;
-                DNA<T> dad;
-                do
-                {
-                    mom = PickOne();
-                    dad = PickOne();
-                } while (string.Concat(mom.Genes) == string.Concat(dad.Genes));
+                DNA<T> mom = Population[0];
+                DNA<T> dad = Population[1];
                 var child = mom.Crossover(dad);
                 child.Mutate(_mutationRate);
                 newPopulation.Add(child);
             }
-            Swap(ref Population, ref newPopulation);
+            var tempdna = Population;
+            Population = newPopulation;
+            newPopulation = tempdna;
+            //Swap(ref Population, ref newPopulation);
             GenCount++;
         }
 
@@ -91,28 +83,18 @@ namespace GeneticGenericAlgorithm
         /// Picks the one.
         /// </summary>
         /// <returns></returns>
-        public DNA<T> PickOne()
+        public DNA<T> ChoseParent()
         {
-            //for (int i = 0; i < Population.Count; i++)
-            //{
-            //    Population[i].Normalize(fitnessSum);
-            //    _random.Next(0, Population.Count);
-            //}
-            //for (int i = 0; i < Population.Count; i++)
-            //{
-            //}
-            return Population[_random.Next(0, Population.Count)];
-
-            //double randomNumber = _random.NextDouble() * fitnessSum;
-            //for (int i = 0; i < Population.Count; i++)
-            //{
-            //    if (randomNumber < Population[i].Fitness)
-            //    {
-            //        return Population[i];
-            //    }
-            //    randomNumber -= Population[i].Fitness;
-            //}
-            //return null;
+            double randomNumber = _random.NextDouble() * fitnessSum;
+            for (int i = 0; i < Population.Count; i++)
+            {
+                if (randomNumber < Population[i].Fitness)
+                {
+                    return Population[i];
+                }
+                randomNumber -= Population[i].Fitness;
+            }
+            return null;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace GeneticGenericAlgorithm
@@ -13,12 +14,14 @@ namespace GeneticGenericAlgorithm
         /// <summary>
         /// The population size
         /// </summary>
-        private const int POPULATION_SIZE = 5;
+        private const int POPULATION_SIZE = 500;
 
         /// <summary>
         /// The target phrase
         /// </summary>
-        private const string TARGET_PHRASE = "winters are cold in australia";
+        private const string TARGET_PHRASE = "Though the English Wikipedia reached three million articles in August 2009 the growth of the edition in terms of the numbers of articles and of contributors appears to have peaked around early 2007 Around 1800 articles were added daily to the encyclopedia in 2006 by 2013 that average was roughly 800 A team at the Palo Alto Research Center attributed this slowing of growth ";
+
+        //private const string TARGET_PHRASE = "Charlie Dua";
 
         /// <summary>
         /// The Genetic Algoritm
@@ -36,15 +39,12 @@ namespace GeneticGenericAlgorithm
         /// <returns></returns>
         public static char[] CreateValidChars()
         {
-            var validChars = new char[27];
-            var j = 0;
-            for (int i = 97; i < 123; i++)
+            var validChars = new List<char>();
+            for (int i = 32; i < 123; i++)
             {
-                validChars[j] = (char)i;
-                j++;
+                validChars.Add((char)i);
             }
-            validChars[j] = ' ';
-            return validChars;
+            return validChars.ToArray();
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace GeneticGenericAlgorithm
                 {
                     score++;
                 }
-                score = score / TARGET_PHRASE.Length;
-                //score = (int)Math.Pow(2, score);
             }
+            score = score / TARGET_PHRASE.Length;
+            score = (float)(Math.Pow(2, score) - 1) / (2 - 1);
             return score;
         }
 
@@ -92,6 +92,15 @@ namespace GeneticGenericAlgorithm
                     break;
                 }
             }
+            Console.Clear();
+            Console.WriteLine("Finished!");
+            Console.WriteLine("Genration: {0}", ga.GenCount);
+            //foreach (var item in ga.Population)
+            //{
+            Console.WriteLine("Data   : {0}", string.Concat(ga.newPopulation[0].Genes));
+            Console.WriteLine("target : {0}", TARGET_PHRASE);
+            Console.WriteLine("Fitness: {0}%", string.Concat(ga.newPopulation[0].Fitness * 100));
+            Console.ReadLine();
         }
 
         /// <summary>
@@ -99,6 +108,7 @@ namespace GeneticGenericAlgorithm
         /// </summary>
         private static void Setup()
         {
+            Console.WriteLine("Please Be patient it is working");
             random = new Random();
             ga = new GeneticAlgoritm<char>(POPULATION_SIZE, MUTATION_RATE,
                 new Random(), TARGET_PHRASE, GetRandomGene, FitnessFunction);
@@ -111,13 +121,17 @@ namespace GeneticGenericAlgorithm
         private static bool Update()
         {
             ga.CreateNewGenration();
+            // Console.Write('.');
+            //{
             Console.Clear();
             Console.WriteLine("Genration: {0}", ga.GenCount);
-            //foreach (var item in ga.Population)
-            //{
-            Console.WriteLine(string.Concat(ga.Population[0].Genes));
-            //}
-            Thread.Sleep(100);
+            Console.WriteLine("Data   : {0}", string.Concat(ga.newPopulation[0].Genes));
+            Console.WriteLine("target : {0}", TARGET_PHRASE);
+            Console.WriteLine("Fitness: {0}%", string.Concat(ga.newPopulation[0].Fitness * 100));
+            if (string.Concat(ga.Population[0].Genes) == TARGET_PHRASE)
+            {
+                return false;
+            }
             return true;
         }
     }
